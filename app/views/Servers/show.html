@@ -1,0 +1,386 @@
+#{extends 'main.html' /}
+#{set title:'Information' /}
+
+#{set 'moreScripts'}
+
+<script type="text/html" charset="utf-8" id="probe_HTTP">
+  <hr />
+  
+  #{field 'server'}
+  <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
+  #{/field}
+  
+  <p>
+    #{field 'name'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.name'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'serverURL'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.http.serverURL'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'expectResponse'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.http.expectResponse'}</label>
+    #{/field}
+  </p>
+  <hr/>
+  <p class="input-submit"><input type="submit" value="&{'probe.create'}"></p>
+</script>
+
+<script type="text/html" charset="utf-8" id="probe_IMAP">
+  <hr />
+
+  #{field 'server'}
+  <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
+  #{/field}
+  
+  <p>
+    #{field 'name'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.name'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'address'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.imap.address'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'username'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.imap.username'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'password'}
+    <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.imap.password'}</label>
+    #{/field}
+  </p>
+  <hr />  
+  <p class="input-submit"><input type="submit" value="&{'probe.create'}"></p>
+</script>
+
+<script type="text/html" charset="utf-8" id="probe_SMTP">
+  <hr />
+
+  #{field 'server'}
+  <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
+  #{/field}
+
+  <p>
+    #{field 'name'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.name'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'recipient'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.smtp.recipient'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'sender'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.smtp.sender'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'address'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.smtp.address'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'username'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.smtp.username'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'password'}
+    <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.smtp.password'}</label>
+    #{/field}
+  </p>
+  <hr />  
+  <p class="input-submit"><input type="submit" value="&{'probe.create'}"></p>
+</script>
+
+<script type="text/html" charset="utf-8" id="probe_SSHLogin">
+  <hr />
+
+  #{field 'server'}
+  <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
+  #{/field}
+
+  <p>
+    #{field 'name'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.name'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'address'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.sshlogin.address'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'username'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.sshlogin.username'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'password'}
+    <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.sshlogin.password'}</label>
+    #{/field}
+  </p>
+  <hr />  
+  <p class="input-submit"><input type="submit" value="&{'probe.create'}"></p>
+</script>
+
+<script type="text/html" charset="utf-8" id="probe_HTTPForm">
+  <hr />
+
+  #{field 'server'}
+  <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
+  #{/field}  
+  
+  <p>
+    #{field 'name'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.name'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'serverURL'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.http.serverURL'}</label>
+    #{/field}
+  </p>
+  
+  <p>
+    #{field 'expectResponse'}
+    <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+    <label for="${field.name}">&{'probe.http.expectResponse'}</label>
+    #{/field}
+  </p>
+  <hr />
+    <span id="http-form-add-param" class="form-menu">
+      <img src="/public/images/system-save.png" />
+      Add parameter
+    </span>
+    <ul id="http-form-params">
+    </ul>
+  <hr />
+  <p class="input-submit"><input type="submit" value="&{'probe.create'}"></p>
+</script>
+
+<script type="text/html" charset="utf-8" id="http_param_form">
+  <p id="http-form-param-<%=index%>">
+    <img id="http-form-delete-param-<%=index%>" class="form-menu" src="/public/images/system-delete.png" />
+    
+    #{field 'keys'}
+    <input type="text" name="${field.name}" id="${field.name}" class="short">
+    <label for="${field.name}">&{'probe.http.form.name'}</label>
+    #{/field}
+  
+    #{field 'values'}
+    <input type="text" name="${field.name}" id="${field.name}" class="short">
+    <label for="${field.name}">&{'probe.http.form.value'}</label>
+    #{/field}
+    
+  </p>
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+    var totalParam = 0
+    
+    this.show_responder = function show_responder() {
+      $('.responder-form').show()
+      $('.probe-form').hide()
+      $('.error').hide()
+    }
+    
+    this.show_probe = function show_probe() {
+      $('.probe-form').show()
+      $('.responder-form').hide()
+      $('.error').hide()
+    }
+    
+    $('#probe-type').change(function(event) {
+      var type = event.target.value
+      if (type != 'none') {
+        totalParam = 0
+        var action = '/' + type + 'Probes/create'
+
+        $('#probe-create-form').html(tmpl('probe_' + type))
+        $('#probe-create-form').attr('action', action)
+        
+        $('#http-form-add-param').click(function(event) {
+          var formID = '#http-form-param-' + totalParam
+          $('#http-form-params').append(tmpl('http_param_form', {index: totalParam}))
+          $('#http-form-delete-param-' + totalParam).click(function(event) {
+            $(formID).remove()
+          })
+          totalParam++
+        })
+      } else {
+        $('#probe-create-form').html('')
+        $('#probe-create-form').attr('action', '')
+      }
+    })
+    
+    $('#probe-form-menu').click(this.show_probe)
+    
+    $('#responder-form-menu').click(this.show_responder)
+    
+    if (document.location.hash == '#responder') {
+      this.show_responder()
+      $('.error').show()
+    } else {
+      this.show_probe()
+      $('.error').show()      
+    }
+  })
+</script>
+
+
+#{/set}
+
+<div class="post entry">
+  <a id="probe-form-menu" href="#probe">Probe</a> | <a id="responder-form-menu" href="#responder">Responder</a>
+</div>
+
+#{secure.check 'user'}
+#{if quota.canCreateProbe(instance)}
+<div class="probe-form" id="genericform">
+  
+  <h3>&{'probe.create'}</h3>
+  
+  #{validation /}
+  
+  <label for="type">&{'probe.select'}</label>
+  <select name="type" id="probe-type">
+    <option value="none">&{'probe.select.help'}</option>
+    #{list items:types, as:'type'}
+    <option value="${type}">&{type}</option>
+    #{/list}
+  </select>
+  
+  <form id="probe-create-form" method="post" accept-charset="utf-8">
+  </form>
+</div>  
+#{/if}
+#{/secure.check}
+
+<div class="post entry probe-form">
+  
+  <h2>&{'server.probe'}</h2>
+  
+  <ul>
+  #{list items:probes, as:'probe'}
+    <li>
+      #{if probe.status}
+      <img class="status" src="/public/images/Done Square.png" />
+      #{/if}
+      #{else}
+      <img class="status" src="/public/images/Caution.png" />
+      #{/else}
+      ${probe.name()} (${probe.type()}) - 
+      <a href="/${probe.type()}Probes/delete?server=${instance.id}&probe=${probe.id}">&{'probe.delete'}</a> | 
+      <a href="/${probe.type()}Probes/check?server=${instance.id}&probe=${probe.id}">&{'probe.check'}</a>
+    </li>
+  #{/list}
+  </ul>
+  
+</div>
+
+#{secure.check 'user'}
+#{if quota.canInviteResponder(instance)}
+<div id="genericform" class="responder-form">
+
+  <h3>&{'responder.add'}</h3>
+
+  #{validation /}
+
+  <form name="add-responder-form" action="@{Responders.create}" method="post" accept-charset="utf-8">
+
+    #{field 'server'}
+    <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
+    #{/field}
+
+    <p>
+      #{field 'email'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'email'}</label>
+      #{/field}
+    </p>
+
+    <p class="input-submit"><input type="submit" value="&{'responder.add'}"></p>
+  </form>
+
+</div>  
+#{/if}
+#{/secure.check}
+
+<div class="post entry responder-form">
+  <h2>&{'server.responders'}</h2>
+  
+  <ul>
+  #{list items:responders, as:'responder'}
+    <li>
+      #{if responder.username != controllers.Security.connected()}
+      #{secure.check 'user'}
+      <a href="@{Responders.delete(instance.id, responder.id)}">
+        <img class="form-menu" src="/public/images/system-delete.png" />
+      </a>
+      #{/secure.check}
+      #{/if}
+      ${responder.username} (${responder.email})
+    </li>
+  #{/list}
+  </ul>
+</div>
+
+<div class="post entry responder-form">
+  <h2>&{'server.responders.waiting'}</h2>
+  
+  <ul>
+  #{list items:invites, as:'invite'}
+  <li>
+    #{secure.check 'user'}
+    <a href="@{Invites.delete(instance.id, invite.id)}">
+      <img class="form-menu" src="/public/images/system-delete.png" />
+    </a>
+    #{/secure.check}
+    ${invite.email}
+  </li>
+  #{/list}
+  </ul>
+</div>

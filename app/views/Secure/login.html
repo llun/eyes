@@ -1,0 +1,36 @@
+#{extends 'main.html' /}
+#{set title:'Login' /}
+
+<div id="genericform">
+  
+  <h3>&{'sign-in'}</h3>
+  
+  #{if flash.error}
+  <p class="error">
+    &{'user.login.error'}
+  </p>
+  #{/if}
+  #{if flash.success}
+  <p class="success">
+    &{'user.logout'}
+  </p>
+  #{/if}
+  
+  <form name="comment-form" action="@{Secure.authenticate}" method="post" accept-charset="utf-8">
+    <p>
+      #{field 'username'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'username'}</label>
+      #{/field}
+    </p>
+    
+    <p>
+      #{field 'password'}
+      <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'password'}</label>
+      #{/field}
+    </p>
+    
+    <p class="input-submit"><input type="submit" value="&{'sign-in'}"></p>
+  </form>
+</div>

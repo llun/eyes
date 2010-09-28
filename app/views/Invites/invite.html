@@ -1,0 +1,52 @@
+#{extends 'main.html' /}
+#{set title:'Register' /}
+
+<div id="genericform">
+  
+  <h3>&{'register'}</h3>
+
+  #{validation /}
+  
+  <form name="register-form" action="@{Invites.register}" method="post" accept-charset="utf-8">
+    
+    #{field 'server'}
+    <input type="hidden" name="${field.name}" value="${server}" id="${field.name}" />
+    #{/field}
+    
+    #{field 'code'}
+    <input type="hidden" name="${field.name}" value="${code}" id="${field.name}">
+    #{/field}
+    
+    <p>
+      #{field 'username'}
+      <input type="text" name="${field.name}" id="${field.id}" value="${field.value}" class="input-text" size="22">
+      <label for="${field.name}">&{'username'}</label>
+      #{/field}
+    </p>
+    
+    <p>
+      #{field 'password'}
+      <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'password'}</label>
+      #{/field}
+    </p>
+    
+    <p>
+      #{field 'confirm'}
+      <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'confirm'}</label>
+      #{/field}
+    </p>
+    
+    <hr />
+    
+    <p>
+      #{field 'email'}
+      <input type="text" name="${field.name}" id="${field.id}" readonly value="${email}" class="input-text" size="22">
+      <label for="${field.name}">&{'email'}</label>
+      #{/field}
+    </p>
+    
+    <p class="input-submit"><input type="submit" value="&{'register'}"></p>
+  </form>
+</div>

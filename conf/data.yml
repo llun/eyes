@@ -1,0 +1,14 @@
+User(admin):
+  email: admin@eyes.labs
+  username: admin
+  hash: 5f4dcc3b5aa765d61d8327deb882cf99
+  role: ADMIN
+  active: true
+  
+Quota(adminquota):
+  user: admin
+  serverLimit: -1
+  probeLimit: -1
+  responderLimit: -1
+  allowMSN: true
+  allowProbes: "HTTP,HTTPForm,IMAP,SSHLogin,SMTP"

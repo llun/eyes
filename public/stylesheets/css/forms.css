@@ -1,0 +1,56 @@
+/* forms.css */
+
+.input-text,
+textarea {
+	border: none;
+	font-size: 1em;
+	padding: .3em;
+}
+
+label {
+	font-size: 1em;
+	margin: 0 .5em;
+}
+
+#search-form label {
+	position: absolute;
+	top: -99999px;
+}
+
+p.input-submit {
+	text-align: left;
+}
+
+#commentform input {
+	width: 43%;
+}
+
+#genericform input {
+  width: 300px;
+}
+
+#genericform .short {
+  width: 120px !important;
+}
+
+#commentform textarea {
+	font-size: 1em;
+	font-family: Helvetica, Arial, sans-serif;
+	width: 98.4%;
+	width: 522px;
+}
+
+#commentform #submit-comment {
+	padding: .3em;
+	width: auto;
+}
+
+#genericform #submit {
+  padding: .3em;
+	width: auto;
+}
+
+#search-form #submit {
+	padding: 1px 13px;
+	margin: 0 0 0 5px;
+}

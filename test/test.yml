@@ -1,0 +1,94 @@
+User(admin):
+  email: admin@eyes.labs
+  username: admin
+  hash: 5f4dcc3b5aa765d61d8327deb882cf99
+  role: ADMIN
+  active: true
+  
+User(guest):
+  email: guest@eyes.labs
+  username: guest
+  hash: 5f4dcc3b5aa765d61d8327deb882cf99
+  role: USER
+  active: true
+  
+User(noserver):
+  email: noserver@eyes.labs
+  username: noserver
+  hash: 5f4dcc3b5aa765d61d8327deb882cf99
+  role: USER
+  active: true
+  
+User(inactive):
+  email: inactive@eyes.labs
+  username: inactive
+  hash: 5f4dcc3b5aa765d61d8327deb882cf99
+  role: USER
+  active: false
+  verifyCode: code
+  
+User(onelimit):
+  email: onelimit@eyes.labs
+  username: onelimit
+  hash: 5f4dcc3b5aa765d61d8327deb882cf99
+  role: USER
+  active: true
+  
+Quota(adminquota):
+  user: admin
+  serverLimit: -1
+  probeLimit: -1
+  responderLimit: -1
+  allowMSN: true
+  allowProbes: "HTTP,HTTPForm,IMAP,SSHLogin,SMTP"
+
+Quota(guestquota):
+  user: guest
+  serverLimit: 1
+  probeLimit: 1
+  responderLimit: 1
+  allowMSN: false
+  allowProbes: "HTTP"
+
+Quota(noserverquota):
+  user: noserver
+  serverLimit: 0
+  probeLimit: 0
+  responderLimit: 0
+  allowMSN: false
+
+Quota(inactivequota):
+  user: inactive
+  serverLimit: 0
+  probeLimit: 0
+  responderLimit: 0
+  allowMSN: false
+  
+Quota(onelimitquota):
+  user: onelimit
+  serverLimit: 1
+  probeLimit: 1
+  responderLimit: 1
+  allowMSN: true
+  allowProbes: "HTTP"
+
+Server(sample):
+  owner: admin
+  name: sample
+  responders: [ guest, inactive ]
+  
+probe.HTTPProbe(probe):
+  server: sample
+  name: Sample
+  serverURL: http://llun.in.th
+  expectResponse: 200
+  
+Invite(userinvite):
+  server: sample
+  email: noserver@eyes.labs
+  code: code
+  
+Invite(nouserinvite):
+  server: sample
+  email: nouser@eyes.labs
+  code: code

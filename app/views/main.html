@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head profile="http://gmpg.org/xfn/11">
+    <title>
+      Eyes Beta: #{get 'title' /}
+    </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="" />
+    
+    #{get 'moreStyles' /}
+    <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}">
+    <link rel="stylesheet" href="@{'/public/stylesheets/style.css'}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="@{'/public/stylesheets/css/print.css'}" type="text/css" media="print" />
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="@{'/public/stylesheets/css/styles-ie7.css'}" type="text/css" media="screen" />
+    <![endif]-->
+    <!--[if IE 6]>
+    <link rel="stylesheet" href="@{'/public/stylesheets/css/styles-ie6.css'}" type="text/css" media="screen" />
+    <![endif]-->
+    
+    <script src="@{'/public/javascripts/jquery-1.4.2.min.js'}" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      // Simple JavaScript Templating
+      // John Resig - http://ejohn.org/ - MIT Licensed
+      (function(){
+        var cache = {};
+
+        this.tmpl = function tmpl(str, data){
+          // Figure out if we're getting a template, or if we need to
+          // load the template - and be sure to cache the result.
+          var fn = !/\W/.test(str) ?
+            cache[str] = cache[str] ||
+              tmpl(document.getElementById(str).innerHTML) :
+
+            // Generate a reusable function that will serve as a template
+            // generator (and which will be cached).
+            new Function("obj",
+              "var p=[],print=function(){p.push.apply(p,arguments);};" +
+
+              // Introduce the data as local variables using with(){}
+              "with(obj){p.push('" +
+
+              // Convert the template into pure JavaScript
+              str
+                .replace(/[\r\t\n]/g, " ")
+                .split("<%").join("\t")
+                .replace(/((^|%>)[^\t]*)'/g, "$1\r")
+                .replace(/\t=(.*?)%>/g, "',$1,'")
+                .split("\t").join("');")
+                .split("%>").join("p.push('")
+                .split("\r").join("\\'")
+            + "');}return p.join('');");
+
+          // Provide some basic currying to the user
+          return data ? fn( data ) : fn;
+        };
+      })();
+    </script>
+    #{get 'moreScripts' /}
+    
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <h1>
+          <a href="/">Eyes Beta</a>
+        </h1>
+        <p class="description"></p>
+      </div><!-- close:header -->
+      <div id="content">
+        <div id="main-content">
+          #{menu /}
+          #{doLayout /}
+        </div><!-- close:main-content -->
+        #{get 'sidebar' /}        
+      </div><!-- close:content -->
+      <div id="footer">
+        <p>
+          Nytes Labs is powered by <a href="http://www.vostoktheme.com" hreflang="en">Vostok Theme</a>
+        </p>
+      </div><!-- close:footer -->
+    </div><!-- close:wrapper -->
+  </body>
+</html>
+

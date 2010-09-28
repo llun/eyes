@@ -1,0 +1,50 @@
+#{extends 'main.html' /}
+#{set title:'Servers' /}
+
+#{secure.check 'user'}
+#{if quota.canCreateServer()}
+<div id="genericform">
+  
+  <h3>&{'server.add'}</h3>
+  
+  #{validation /}
+  
+  <form name="add-server-form" action="@{Servers.create}" method="post" accept-charset="utf-8">
+    <p>
+      #{field 'name'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'server.name'}</label>
+      #{/field}
+    </p>
+    
+    <p class="input-submit"><input type="submit" value="&{'server.add'}"></p>
+  </form>
+</div>    
+#{/if}
+#{/secure.check}
+
+<div class="post entry">
+  
+  <h2>&{'server.list'}</h2>
+  
+  <ul>
+  #{list items:servers, as:'server'}
+    <li>
+      #{if server.status == models.Server.Status.UP}
+      <img class="status" src="/public/images/Done Square.png" />
+      #{/if}
+      #{else}
+      <img class="status" src="/public/images/Caution.png" />
+      #{/else}
+      <span class="server-name"><a href="@{Servers.show(server.id)}">${server.name}</a></span>
+      #{if server.message.length() > 0}
+      ${server.message}  
+      #{/if}
+      #{if server.owner.equals(user)}
+      ( <a href="@{Servers.delete(server.id)}">&{'server.delete'}</a> )
+      #{/if}
+    </li>
+  #{/list}
+  </ul>
+  
+</div>

@@ -1,0 +1,65 @@
+#{extends 'main.html' /}
+#{set title:'Users' /}
+
+<div id="genericform">
+  
+  <h3>&{'user.add'}</h3>
+  
+  #{validation /}
+  
+  <form name="profile-form" action="@{Users.create}" method="post" accept-charset="utf-8">
+    <p>
+      #{field 'username'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'username'}</label>
+      #{/field}
+    </p>
+    
+    <p>
+      #{field 'password'}
+      <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'password'}</label>
+      #{/field}
+    </p>
+    
+    <p>
+      #{field 'email'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'email'}</label>
+      #{/field}
+    </p>
+
+    <p>
+      #{field 'role'}
+      <select name="${field.name}" id="${field.name}">
+        <option value="ADMIN">&{'user.role.admin'}</option>
+        <option value="USER">&{'user.role.user'}</option>
+        <option value="RESPONDER">&{'user.role.responder'}</option>
+      </select>
+      <label for="${field.name}">&{'user.role'}</label>
+      #{/field}
+    </p>
+
+    
+    <p class="input-submit"><input type="submit" value="&{'user.add'}"></p>
+  </form>
+</div>
+
+<div class="post entry">
+  
+  <h2>&{'users'}</h2>
+  
+  <ul>
+  #{list items:users, as:'user'}
+    <li>
+    #{if user.username != 'admin'}
+      <a href="@{Users.destroy(user.id)}">
+        <img class="form-menu" src="/public/images/system-delete.png" />
+      </a>
+    #{/if}
+    ${user.username} ( ${user.email} ) - ${user.role} - ${user.active}
+    </li>
+  #{/list}
+  </ul>
+  
+</div>

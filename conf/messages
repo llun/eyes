@@ -1,0 +1,75 @@
+# You can specialize this file for each language.
+# For example, for French create a messages.fr file
+#
+
+sign-in = Sign in
+sign-out = Sign out
+users = Users
+profile = Profile
+username = Username
+password = Password
+password.change = Change Password
+password.required = Password is required
+confirm = Confirm
+confirm.error = Confirm password doesn't match
+email = Email
+email.error = "Email is required"
+register = Register
+profile = Profile
+
+mail.verify.head = Please verify account
+mail.verify.body = Verify link: %s
+
+user.login.error=Oops, unknown username or password.
+user.logout=You have been logged out.
+user.register.confirmnotmatch=not match with password.
+user.register.duplicate=already exists.
+user.verify=Verify success.
+user.add = Add user
+user.role = User Level
+user.role.admin = Administrator
+user.role.user = Normal User
+user.role.responder = Responder User
+
+server.add = Add server
+server.name = Server name
+server.list = Servers
+server.delete = delete
+server.probe = Probes
+server.probe.down = Some probes have problem.
+server.responders = Responders
+server.responders.waiting = Waiting response
+server.duplicated = duplicated
+
+probe.create = Create probe
+probe.delete = delete
+probe.check = check
+probe.select = Select probe type to create
+probe.select.help = 
+probe.name = Name
+probe.http.error = Can't add HTTP Probe
+probe.http.serverURL = URL
+probe.http.expectResponse = Response code
+probe.http.form.error = Can't add HTTP Form probe
+probe.http.form.name = Name
+probe.http.form.value = Value
+probe.imap.error = Can't add IMAP probe
+probe.imap.address = Address
+probe.imap.username = Username
+probe.imap.password = Password
+probe.smtp.error = Can't add SMTP probe
+probe.smtp.recipient = Recipient
+probe.smtp.sender = Sender
+probe.smtp.address = Address
+probe.smtp.username = Username
+probe.smtp.password = Password
+probe.sshlogin.error = Can't add SSH Login probe
+probe.sshlogin.address = Address
+probe.sshlogin.username = Username
+probe.sshlogin.password = Password
+
+responder.add = Add responder
+responder.invite.success = Invite success
+responder.invite.overquota = Responder over quota
+responder.invite.header = %s invite you to monitor %s
+responder.invite.body = Open link to accept invitation: %s

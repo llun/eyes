@@ -1,0 +1,17 @@
+#{if flash.success}
+<div class="success">
+  ${flash.success}
+</div>
+#{/if}
+#{ifErrors}
+<div class="error">
+  #{if flash.message}
+  ${flash.message}
+  #{/if}
+  <ul class="error">
+    #{errors}
+    <li><span class="field">${error.key}</span> is ${error}</li>
+    #{/errors}
+  </ul>
+</div>
+#{/ifErrors}

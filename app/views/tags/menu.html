@@ -1,0 +1,12 @@
+#{if controllers.Security.isConnected()}
+<span class="menu">
+  #{secure.check 'admin'}
+  <a href="@{Users.list()}">&{'users'}</a> |   
+  #{/secure.check}
+  <a href="@{Users.profile()}">&{'profile'}</a> | 
+  <a href="@{Secure.logout()}">&{'sign-out'}</a>
+</span>
+#{/if}
+#{else}
+<span class="menu"><a href="@{Secure.login()}">&{'sign-in'}</a></span>
+#{/else}

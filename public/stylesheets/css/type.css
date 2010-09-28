@@ -1,0 +1,128 @@
+/* type.css */
+
+#wrapper {
+	font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+	font-size: 1.3em;
+	line-height: 1.5em;
+}
+
+p {
+	margin: 1em 0;
+}
+
+h1 {
+	font-size: 2.1em;
+	font-weight: normal;
+}
+
+#header .description {
+	font-size: 0.85em;
+}
+
+#header a {
+	text-decoration: none;
+}
+
+a.back {
+	text-decoration: underline;
+}
+
+#search h2,
+.post h2,
+#comments h3,
+#commentform h3,
+#genericform h3,
+.emptysearch,
+.error {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 1.5em;
+	font-weight: normal;
+}
+
+.post h2 a {
+	text-decoration: none;
+}
+
+.post h2 {
+	line-height: 1.2em;
+}
+
+.post h3 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 1.3em;
+	font-weight: normal;
+	line-height: 1.2em;
+}
+
+.post h4 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 1.2em;
+	font-weight: normal;
+	line-height: 1.2em;
+}
+
+.post h5 {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 1.1em;
+	font-weight: normal;
+	line-height: 1.2em;
+}
+
+.post blockquote cite {
+	font-style: normal;
+}
+
+.form-menu {
+  cursor: pointer;
+  font-size: .95em;
+  vertical-align: top;
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+.date, .menu {
+	font-size: .95em;
+}
+
+.post .number-of-comments a {
+	text-decoration: underline;
+}
+
+.field {
+  text-transform: capitalize;
+}
+
+#comments h3 {
+	margin: 0 0 2em 0;	
+}
+
+#commentform h3,
+#genericform h3 {
+	margin: 0 0 1.5em 0;
+}
+
+.comment cite {
+	font-style: normal;
+}
+
+.comment cite a {
+	text-decoration: underline;
+}
+
+.pagination a {
+	text-decoration: underline;
+}
+
+#sidebar a {
+	text-decoration: none;
+}
+
+#footer a {
+	text-decoration: underline;
+}
+
+#footer p {
+	margin: 0;
+}

@@ -1,0 +1,43 @@
+#{extends 'main.html' /}
+#{set title:'Register' /}
+
+<div id="genericform">
+  
+  <h3>&{'register'}</h3>
+
+  #{validation /}
+  
+  <form name="register-form" action="@{Application.register}" method="post" accept-charset="utf-8">
+    <p>
+      #{field 'username'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'username'}</label>
+      #{/field}
+    </p>
+    
+    <p>
+      #{field 'password'}
+      <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'password'}</label>
+      #{/field}
+    </p>
+    
+    <p>
+      #{field 'confirm'}
+      <input type="password" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'confirm'}</label>
+      #{/field}
+    </p>
+    
+    <hr />
+    
+    <p>
+      #{field 'email'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'email'}</label>
+      #{/field}
+    </p>
+    
+    <p class="input-submit"><input type="submit" value="&{'register'}"></p>
+  </form>
+</div>
