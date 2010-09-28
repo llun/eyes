@@ -5,20 +5,27 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 
-import models.Server.Status;
 import play.db.jpa.Model;
 
 @Entity
 public class EventLog extends Model {
 
-  @OneToOne
-  @JoinColumn(name = "server_id")
-  public Server server;
+  public static enum Type {
+    Server, Probe;
+  }
+
+  // Event creates from server status or probe status
   @Enumerated(EnumType.ORDINAL)
-  public Status status;
+  public Type type;
+
+  // Event instance, server id or probe id
+  public Long instance;
+
+  // Event status, e.g. 0 for server means fail and 1 for server means ok.
+  public Integer status;
+
+  // Event message
   public String message;
   public Date created;
 
