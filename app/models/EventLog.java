@@ -29,4 +29,22 @@ public class EventLog extends Model {
   public String message;
   public Date created;
 
+  public EventLog(Type type, Long instance, Integer status, String message) {
+    this.type = type;
+    this.instance = instance;
+    this.status = status;
+    this.message = message;
+    this.created = new Date();
+  }
+
+  public static void submit(Type type, Long instance, Integer status) {
+    submit(type, instance, status, "");
+  }
+
+  public static void submit(Type type, Long instance, Integer status,
+      String message) {
+    EventLog event = new EventLog(type, instance, status, message);
+    event.save();
+  }
+
 }

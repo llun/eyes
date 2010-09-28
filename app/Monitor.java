@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import models.EventLog;
 import models.Server;
+import models.EventLog.Type;
 import models.Server.Status;
 import models.User;
 import models.probe.Probe;
@@ -48,6 +50,9 @@ public class Monitor extends Job {
 
         buffer.append(String.format("%s: %s\n<br />\n", probe.name(),
             probe.status() ? "OK" : "This probe have something wrong"));
+
+        EventLog.submit(Type.Probe, probe.getId(), probe.status() ? Probe.OK
+            : Probe.FAIL);
       }
 
       if (server.status == Status.DOWN) {
@@ -56,6 +61,8 @@ public class Monitor extends Job {
         server.message = "";
       }
       server.save();
+
+      EventLog.submit(Type.Server, server.getId(), server.status.ordinal());
 
       if (server.status == Status.DOWN && server.probes().length > 0
           && server.responders.size() > 0) {
