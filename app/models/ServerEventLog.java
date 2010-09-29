@@ -31,4 +31,20 @@ public class ServerEventLog extends Model {
     event.save();
   }
 
+  public static long count(Server server, Status status, Date begin, Date end) {
+    return 0;
+  }
+
+  public static long count(Server server, Date begin, Date end) {
+    return 0;
+  }
+
+  public static long count(Server server, Status status) {
+    return 0;
+  }
+
+  public static long count(Server server) {
+    return 0;
+  }
+
 }

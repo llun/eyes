@@ -1,7 +1,10 @@
 package models;
 
+import javax.persistence.Entity;
+
 import play.db.jpa.Model;
 
+@Entity
 public class ProbeEventLog extends Model {
 
   public Long probeID;
