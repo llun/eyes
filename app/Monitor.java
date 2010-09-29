@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import models.EventLog;
+import models.ProbeEventLog;
 import models.Server;
-import models.EventLog.Type;
 import models.Server.Status;
+import models.ServerEventLog;
 import models.User;
 import models.probe.Probe;
 import play.Logger;
@@ -44,15 +44,15 @@ public class Monitor extends Job {
       StringBuffer buffer = new StringBuffer();
       Probe serverProbes[] = server.probes();
       for (Probe probe : serverProbes) {
-        if (!probe.status() && server.status == Status.UP) {
+        boolean status = probe.status();
+        if (!status && server.status == Status.UP) {
           server.status = Status.DOWN;
         }
 
         buffer.append(String.format("%s: %s\n<br />\n", probe.name(),
-            probe.status() ? "OK" : "This probe have something wrong"));
+            status ? "OK" : "This probe have something wrong"));
 
-        EventLog.submit(Type.Probe, probe.getId(), probe.status() ? Probe.OK
-            : Probe.FAIL);
+        ProbeEventLog.submit(probe.getId(), probe.type(), status, "");
       }
 
       if (server.status == Status.DOWN) {
@@ -61,9 +61,8 @@ public class Monitor extends Job {
         server.message = "";
       }
       server.save();
-
-      EventLog.submit(Type.Server, server.getId(), server.status.ordinal());
-
+      ServerEventLog.submit(server, server.status, server.message);
+      
       if (server.status == Status.DOWN && server.probes().length > 0
           && server.responders.size() > 0) {
         ArrayList<String> recipients = new ArrayList<String>();
