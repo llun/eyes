@@ -3,3 +3,6 @@
 .project
 .settings
 eclipse
+test-output
+test-result
+tmp

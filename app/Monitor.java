@@ -1,4 +1,3 @@
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -11,7 +10,12 @@ import models.Server.Status;
 import models.ServerEventLog;
 import models.User;
 import models.probe.Probe;
+
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
+
 import play.Logger;
+import play.Play;
 import play.i18n.Messages;
 import play.jobs.Every;
 import play.jobs.Job;
@@ -62,7 +66,7 @@ public class Monitor extends Job {
       }
       server.save();
       ServerEventLog.submit(server, server.status, server.message);
-      
+
       if (server.status == Status.DOWN && server.probes().length > 0
           && server.responders.size() > 0) {
         ArrayList<String> recipients = new ArrayList<String>();
@@ -70,12 +74,20 @@ public class Monitor extends Job {
         for (User responder : responders) {
           recipients.add(responder.email);
         }
-        Mail.send("alert@throughwave.com", "alert@throughwave.com",
-            recipients.toArray(new String[recipients.size()]),
-            String.format("%s have some problems", server.name),
-            buffer.toString(),
-            "Something wrong please login to monitor.nytes.net", "text/html",
-            new File[0]);
+
+        String from = Play.configuration.getProperty("eyes.mail");
+        HtmlEmail htmlEmail = new HtmlEmail();
+        try {
+          htmlEmail.setFrom(from);
+          htmlEmail.setTo(recipients);
+          htmlEmail.setSubject(String.format("%s have some problems",
+              server.name));
+          htmlEmail.setHtmlMsg(buffer.toString());
+          Mail.send(htmlEmail);
+        } catch (EmailException e) {
+          Logger.error(e, "Can't send mail");
+        }
+
       }
 
     }

@@ -1,6 +1,5 @@
 package models.probe;
 
-import java.net.URI;
 import java.util.HashMap;
 
 import javax.persistence.Entity;
@@ -9,17 +8,10 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import models.Server;
-
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnectionManager;
-import org.apache.commons.httpclient.SimpleHttpConnectionManager;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.protocol.Protocol;
-
-import play.Logger;
 import play.db.jpa.Model;
-import clients.YesSSLProtocolSocketFactory;
+import play.libs.WS;
+import play.libs.WS.HttpResponse;
+import play.libs.WS.WSRequest;
 
 @Entity
 public class HTTPFormProbe extends Model implements Probe {
@@ -64,48 +56,13 @@ public class HTTPFormProbe extends Model implements Probe {
   public boolean check() {
     boolean result = false;
 
-    URI serverURI = URI.create(serverURL);
-    String scheme = serverURI.getScheme();
-
-    if (scheme.toLowerCase().equals("https")) {
-
-      int port = serverURI.getPort();
-      port = port == -1 ? 443 : port;
-
-      Protocol.registerProtocol("https", new Protocol("https",
-          new YesSSLProtocolSocketFactory(), port));
+    WSRequest request = WS.url(serverURL);
+    request.setParameters(properties);
+    HttpResponse response = request.post();
+    if (response.getStatus() == expectResponse) {
+      result = true;
     }
 
-    HttpConnectionManager connectionManager = new SimpleHttpConnectionManager();
-
-    HttpClient client = new HttpClient(connectionManager);
-    client.getParams().setParameter("http.useragent", "Test Client");
-    client.getParams().setConnectionManagerTimeout(1000);
-    client.getParams().setSoTimeout(1000);
-
-    PostMethod post = new PostMethod(serverURL);
-    for (String key : properties.keySet()) {
-      post.addParameter(key, properties.get(key));
-    }
-
-    try {
-      int status = client.executeMethod(post);
-
-      if (status == expectResponse) {
-
-        Header[] headers = post.getResponseHeaders();
-        for (Header header : headers) {
-          Logger.info("%s: %s", header.getName(), header.getValue());
-        }
-
-        result = true;
-      }
-
-    } catch (Exception e) {
-      Logger.error(e, "Can't login to %s", serverURI);
-    } finally {
-      post.releaseConnection();
-    }
     return result;
   }
 

@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -7,6 +8,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import org.apache.commons.mail.EmailException;
+import org.apache.commons.mail.HtmlEmail;
+
+import play.Logger;
 import play.Play;
 import play.db.jpa.Model;
 import play.i18n.Messages;
@@ -145,11 +150,21 @@ public class User extends Model {
       arguments.put("code", user.verifyCode);
       String verifyURL = Router.getFullUrl("Application.verify", arguments);
 
-      String mail = Play.configuration.getProperty("eyes.mail");
+      ArrayList<String> to = new ArrayList<String>();
+      to.add(lcEmail);
+      String from = Play.configuration.getProperty("eyes.mail");
+      HtmlEmail htmlEmail = new HtmlEmail();
+      try {
+        htmlEmail.setFrom(from);
+        htmlEmail.setTo(to);
+        htmlEmail.setSubject(Messages.get("mail.verify.head"));
+        htmlEmail.setHtmlMsg(Messages.get("mail.verify.body", verifyURL));
+        Mail.send(htmlEmail);
 
-      Mail.send(mail, lcEmail, Messages.get("mail.verify.head"),
-          Messages.get("mail.verify.body", verifyURL));
-      result = true;
+        result = true;
+      } catch (EmailException e) {
+        Logger.error(e, "Can't send mail");
+      }
     }
     return result;
   }

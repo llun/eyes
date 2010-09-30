@@ -1,22 +1,15 @@
 package models.probe;
 
-import java.net.URI;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import models.Server;
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnectionManager;
-import org.apache.commons.httpclient.SimpleHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.protocol.Protocol;
-
 import play.Logger;
 import play.db.jpa.Model;
-import clients.YesSSLProtocolSocketFactory;
+import play.libs.WS;
+import play.libs.WS.HttpResponse;
+import play.libs.WS.WSRequest;
 
 @Entity
 public class HTTPProbe extends Model implements Probe {
@@ -57,37 +50,15 @@ public class HTTPProbe extends Model implements Probe {
   public boolean check() {
     boolean result = false;
 
-    URI serverURI = URI.create(serverURL);
-    String scheme = serverURI.getScheme();
-
-    if (scheme.toLowerCase().equals("https")) {
-      int port = serverURI.getPort();
-      port = port == -1 ? 443 : port;
-      Protocol.registerProtocol("https", new Protocol("https",
-          new YesSSLProtocolSocketFactory(), port));
+    WSRequest request = WS.url(serverURL);
+    HttpResponse response = request.get();
+    if (response.getStatus() == expectResponse) {
+      result = true;
+    } else {
+      Logger
+          .error("status: %d\n%s", response.getStatus(), response.getString());
     }
 
-    HttpConnectionManager connectionManager = new SimpleHttpConnectionManager();
-
-    HttpClient client = new HttpClient(connectionManager);
-    client.getParams().setParameter("http.useragent", "Test Client");
-    client.getParams().setConnectionManagerTimeout(1000);
-    client.getParams().setSoTimeout(1000);
-
-    GetMethod get = new GetMethod(serverURL);
-
-    try {
-      int status = client.executeMethod(get);
-
-      if (status == expectResponse) {
-        result = true;
-      }
-
-    } catch (Exception e) {
-      Logger.error(e, "Can't get data from %s", serverURL);
-    } finally {
-      get.releaseConnection();
-    }
     return result;
   }
 
