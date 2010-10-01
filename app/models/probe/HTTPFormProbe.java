@@ -59,7 +59,7 @@ public class HTTPFormProbe extends Model implements Probe {
     WSRequest request = WS.url(serverURL);
     request.setParameters(properties);
     HttpResponse response = request.post();
-    if (response.getStatus() == expectResponse) {
+    if (response.getStatus().equals(expectResponse)) {
       result = true;
     }
 

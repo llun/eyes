@@ -1,5 +1,7 @@
 package models.probe;
 
+import java.net.URL;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -52,7 +54,7 @@ public class HTTPProbe extends Model implements Probe {
 
     WSRequest request = WS.url(serverURL);
     HttpResponse response = request.get();
-    if (response.getStatus() == expectResponse) {
+    if (response.getStatus().equals(expectResponse)) {
       result = true;
     } else {
       Logger
