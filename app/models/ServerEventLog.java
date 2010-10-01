@@ -31,20 +31,33 @@ public class ServerEventLog extends Model {
     event.save();
   }
 
-  public static long count(Server server, Status status, Date begin, Date end) {
-    return 0;
+  public static long eventCount(Server server, Status status, Date begin,
+      Date end) {
+    return ServerEventLog.count(
+        "server = ? and status = ? and created >= ? and created <= ?", server,
+        status, begin, end);
   }
 
-  public static long count(Server server, Date begin, Date end) {
-    return 0;
+  public static long eventCount(Server server, Date begin, Date end) {
+    return ServerEventLog.count("server = ? and created >= ? and created <= ?",
+        server, begin, end);
   }
 
-  public static long count(Server server, Status status) {
-    return 0;
+  public static long eventCount(Server server, Status status, Date date) {
+    return ServerEventLog.count("byServerAndCreatedAndStatus", server, date,
+        status);
   }
 
-  public static long count(Server server) {
-    return 0;
+  public static long eventCount(Server server, Date date) {
+    return ServerEventLog.count("byServerAndCreated", server, date);
+  }
+
+  public static long eventCount(Server server, Status status) {
+    return ServerEventLog.count("byServerAndStatus", server, status);
+  }
+
+  public static long eventCount(Server server) {
+    return ServerEventLog.count("byServer", server);
   }
 
 }

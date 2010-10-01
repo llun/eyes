@@ -92,3 +92,33 @@ Invite(nouserinvite):
   server: sample
   email: nouser@eyes.labs
   code: code
+  
+ServerEventLog(serverevent1):
+  server: sample
+  created: 2010-09-14
+  status: UP
+  message: Normal operation
+  
+ServerEventLog(serverevent2):
+  server: sample
+  created: 2010-09-15
+  status: DOWN
+  message: Some probe can't get status
+  
+ServerEventLog(serverevent3):
+  server: sample
+  created: 2010-09-16
+  status: DOWN
+  message: Some probe can't get status
+  
+ServerEventLog(serverevent4):
+  server: sample
+  created: 2010-09-17
+  status: UP
+  message: Normal operation
+  
+ServerEventLog(serverevent5):
+  server: sample
+  created: 2010-09-18
+  status: UP
+  message: Normal operation
