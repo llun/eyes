@@ -33,31 +33,31 @@ public class ServerEventLog extends Model {
 
   public static long eventCount(Server server, Status status, Date begin,
       Date end) {
-    return ServerEventLog.count(
-        "server = ? and status = ? and created >= ? and created <= ?", server,
-        status, begin, end);
-  }
+    long count = 0;
 
-  public static long eventCount(Server server, Date begin, Date end) {
-    return ServerEventLog.count("server = ? and created >= ? and created <= ?",
-        server, begin, end);
-  }
+    if (status != null) {
+      if (begin != null && end != null) {
+        count = ServerEventLog.count(
+            "server = ? and status = ? and created >= ? and created <= ?",
+            server, status, begin, end);
+      } else if (begin != null) {
+        count = ServerEventLog.count("byServerAndCreatedAndStatus", server,
+            begin, status);
+      } else {
+        count = ServerEventLog.count("byServerAndStatus", server, status);
+      }
+    } else {
+      if (begin != null && end != null) {
+        count = ServerEventLog.count(
+            "server = ? and created >= ? and created <= ?", server, begin, end);
+      } else if (begin != null) {
+        count = ServerEventLog.count("byServerAndCreated", server, begin);
+      } else {
+        count = ServerEventLog.count("byServer", server);
+      }
+    }
 
-  public static long eventCount(Server server, Status status, Date date) {
-    return ServerEventLog.count("byServerAndCreatedAndStatus", server, date,
-        status);
-  }
-
-  public static long eventCount(Server server, Date date) {
-    return ServerEventLog.count("byServerAndCreated", server, date);
-  }
-
-  public static long eventCount(Server server, Status status) {
-    return ServerEventLog.count("byServerAndStatus", server, status);
-  }
-
-  public static long eventCount(Server server) {
-    return ServerEventLog.count("byServer", server);
+    return count;
   }
 
 }

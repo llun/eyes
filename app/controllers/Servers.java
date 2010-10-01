@@ -1,10 +1,13 @@
 package controllers;
 
+import java.util.Date;
 import java.util.Set;
 
 import models.Invite;
 import models.Quota;
 import models.Server;
+import models.Server.Status;
+import models.ServerEventLog;
 import models.User;
 import models.probe.Probe;
 import play.data.validation.Required;
@@ -64,4 +67,11 @@ public class Servers extends Controller {
     index();
   }
 
+  public static void eventCount(@Required Long server, Status status,
+      Date begin, Date end) {
+    Server instance = Server.findById(server);
+    if (instance != null) {
+      renderText(ServerEventLog.eventCount(instance, status, begin, end));
+    }
+  }
 }
