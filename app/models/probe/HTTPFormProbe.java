@@ -8,6 +8,7 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import models.Server;
+import play.Logger;
 import play.db.jpa.Model;
 import play.libs.WS;
 import play.libs.WS.HttpResponse;
@@ -24,7 +25,8 @@ public class HTTPFormProbe extends Model implements Probe {
   public String name;
   public String serverURL;
   public Integer expectResponse;
-  public Boolean status;
+  @Lob
+  public ProbeResult status;
   @Lob
   public HashMap<String, String> properties;
 
@@ -49,18 +51,23 @@ public class HTTPFormProbe extends Model implements Probe {
     return server;
   }
 
-  public boolean status() {
+  public ProbeResult status() {
     return status;
   }
 
-  public boolean check() {
-    boolean result = false;
+  public ProbeResult check() {
+    ProbeResult result;
 
     WSRequest request = WS.url(serverURL);
     request.setParameters(properties);
     HttpResponse response = request.post();
     if (response.getStatus().equals(expectResponse)) {
-      result = true;
+      result = new ProbeResult(true);
+    } else {
+      String message = String.format("Server response %d but expect %d",
+          response.getStatus(), expectResponse);
+      Logger.error(message);
+      result = new ProbeResult(false, message);
     }
 
     return result;

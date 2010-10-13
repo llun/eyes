@@ -10,6 +10,7 @@ import models.Server.Status;
 import models.ServerEventLog;
 import models.User;
 import models.probe.Probe;
+import models.probe.ProbeResult;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -48,15 +49,16 @@ public class Monitor extends Job {
       StringBuffer buffer = new StringBuffer();
       Probe serverProbes[] = server.probes();
       for (Probe probe : serverProbes) {
-        boolean status = probe.status();
-        if (!status && server.status == Status.UP) {
+        ProbeResult status = probe.status();
+        if (!status.success && server.status == Status.UP) {
           server.status = Status.DOWN;
         }
 
         buffer.append(String.format("%s: %s\n<br />\n", probe.name(),
-            status ? "OK" : "This probe have something wrong"));
+            status.success ? "OK" : status.message));
 
-        ProbeEventLog.submit(probe.getId(), probe.type(), status, "");
+        ProbeEventLog.submit(probe.getId(), probe.type(), status.success,
+            status.message);
       }
 
       if (server.status == Status.DOWN) {

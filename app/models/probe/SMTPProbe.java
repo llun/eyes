@@ -10,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMessage.RecipientType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import models.Server;
@@ -33,10 +34,12 @@ public class SMTPProbe extends Model implements Probe {
   public String username;
   public String password;
   public String address;
-  public Boolean status;
-  
-  public SMTPProbe(Server server, String name, String recipient,
-      String sender, String username, String password, String address) {
+
+  @Lob
+  public ProbeResult status;
+
+  public SMTPProbe(Server server, String name, String recipient, String sender,
+      String username, String password, String address) {
     this.server = server;
     this.name = name;
     this.recipient = recipient;
@@ -57,13 +60,13 @@ public class SMTPProbe extends Model implements Probe {
   public Server server() {
     return server;
   }
-  
-  public boolean status() {
+
+  public ProbeResult status() {
     return status;
   }
 
-  public boolean check() {
-    boolean result = false;
+  public ProbeResult check() {
+    ProbeResult result;
 
     Properties properties = new Properties();
     properties.put("mail.smtp.host", address);
@@ -87,10 +90,11 @@ public class SMTPProbe extends Model implements Probe {
       message.setSentDate(new Date());
       Transport.send(message);
 
-      result = true;
+      result = new ProbeResult(true);
     } catch (Exception e) {
-      Logger.error(e, "Can't send mail");
-      result = false;
+      String error = String.format("Can't send mail from % server.", address);
+      Logger.error(e, error);
+      result = new ProbeResult(false, error);
     }
     return result;
   }

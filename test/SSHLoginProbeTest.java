@@ -1,3 +1,4 @@
+import models.probe.ProbeResult;
 import models.probe.SSHLoginProbe;
 
 import org.junit.Test;
@@ -11,8 +12,8 @@ public class SSHLoginProbeTest extends UnitTest {
 
     SSHLoginProbe probe = new SSHLoginProbe(null, null, "username", "password",
         "eyes.labs");
-    Boolean result = probe.check();
-    assertTrue(result);
+    ProbeResult result = probe.check();
+    assertTrue(result.success);
 
   }
 

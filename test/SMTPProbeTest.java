@@ -1,3 +1,4 @@
+import models.probe.ProbeResult;
 import models.probe.SMTPProbe;
 
 import org.junit.Test;
@@ -10,10 +11,9 @@ public class SMTPProbeTest extends UnitTest {
   public void testCheck() {
 
     SMTPProbe probe = new SMTPProbe(null, null, "responders@eyes.labs",
-        "admin@eyes.labs", "admin@eyes.labs", "password",
-        "mail.eyes.labs");
-    Boolean result = probe.check();
-    assertTrue(result);
+        "admin@eyes.labs", "admin@eyes.labs", "password", "mail.eyes.labs");
+    ProbeResult result = probe.check();
+    assertTrue(result.success);
   }
 
 }

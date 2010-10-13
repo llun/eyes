@@ -11,7 +11,7 @@ public interface Probe {
   String type();
   String name();
   Server server();
-  boolean status();
-  boolean check();
+  ProbeResult status();
+  ProbeResult check();
   
 }

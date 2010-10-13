@@ -1,6 +1,7 @@
 import java.util.HashMap;
 
 import models.probe.HTTPFormProbe;
+import models.probe.ProbeResult;
 
 import org.junit.Test;
 
@@ -15,10 +16,10 @@ public class HTTPFormProbeTest extends UnitTest {
     properties.put("username", "username");
     properties.put("password", "password");
 
-    HTTPFormProbe probe = new HTTPFormProbe(null, null,
-        "http://eyes.labs", 200, properties);
-    Boolean result = probe.check();
-    assertTrue(result);
+    HTTPFormProbe probe = new HTTPFormProbe(null, null, "http://eyes.labs",
+        200, properties);
+    ProbeResult result = probe.check();
+    assertTrue(result.success);
   }
 
 }

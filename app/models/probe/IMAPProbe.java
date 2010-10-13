@@ -6,6 +6,7 @@ import javax.mail.Session;
 import javax.mail.Store;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import models.Server;
@@ -26,8 +27,10 @@ public class IMAPProbe extends Model implements Probe {
   public String username;
   public String password;
   public String address;
-  public Boolean status;
-  
+
+  @Lob
+  public ProbeResult status;
+
   public IMAPProbe(Server server, String name, String username,
       String password, String address) {
     this.server = server;
@@ -48,13 +51,13 @@ public class IMAPProbe extends Model implements Probe {
   public Server server() {
     return server;
   }
-  
-  public boolean status() {
+
+  public ProbeResult status() {
     return status;
   }
 
-  public boolean check() {
-    boolean result = false;
+  public ProbeResult check() {
+    ProbeResult result;
 
     Properties properties = new Properties();
     properties.setProperty("mail.store.protocol", "imap");
@@ -65,15 +68,20 @@ public class IMAPProbe extends Model implements Probe {
         Logger.info("Checking IMAP: %s", address);
         store.connect(address, username, password);
         store.getDefaultFolder();
-        result = true;
+
+        result = new ProbeResult(true);
       } catch (Exception e) {
-        Logger.error(e, "Can't connect to IMAP");
+        String message = String.format("Can't load mail from %s server",
+            address);
+        Logger.error(e, message);
+        result = new ProbeResult(false, message);
       } finally {
         store.close();
       }
     } catch (Exception e) {
-      Logger.error(e, "Can't connect to IMAP");
-      result = false;
+      String message = "Can't create mail session";
+      Logger.error(e, message);
+      result = new ProbeResult(false, message);
     }
     return result;
   }

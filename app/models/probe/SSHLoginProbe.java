@@ -2,6 +2,7 @@ package models.probe;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
 import models.Server;
@@ -25,7 +26,9 @@ public class SSHLoginProbe extends Model implements Probe {
   public String username;
   public String password;
   public String address;
-  public Boolean status;
+
+  @Lob
+  public ProbeResult status;
 
   public SSHLoginProbe(Server server, String name, String username,
       String password, String address) {
@@ -49,13 +52,12 @@ public class SSHLoginProbe extends Model implements Probe {
     return server;
   }
 
-  public boolean status() {
+  public ProbeResult status() {
     return status;
   }
-  
-  public boolean check() {
-    boolean result = false;
 
+  public ProbeResult check() {
+    ProbeResult result;
     JSch jsch = new JSch();
     try {
       com.jcraft.jsch.Session session = jsch.getSession(username, address, 22);
@@ -64,15 +66,20 @@ public class SSHLoginProbe extends Model implements Probe {
         session.setConfig("StrictHostKeyChecking", "no");
         session.connect(1000);
 
-        result = true;
+        result = new ProbeResult(true);
       } catch (Exception e) {
-        Logger.error(e, "Can't login ssh");
+        String message = String.format("Can't ssh to %s with user %s", address,
+            username);
+        Logger.error(e, message);
+        result = new ProbeResult(false, message);
       } finally {
         session.disconnect();
       }
 
     } catch (JSchException e) {
-      e.printStackTrace();
+      String message = String.format("Can't create ssh session");
+      Logger.error(e, message);
+      result = new ProbeResult(false, message);
     }
     return result;
   }
