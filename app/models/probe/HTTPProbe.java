@@ -1,6 +1,7 @@
 package models.probe;
 
-import java.net.URL;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -10,9 +11,12 @@ import javax.persistence.OneToOne;
 import models.Server;
 import play.Logger;
 import play.db.jpa.Model;
-import play.libs.WS;
 import play.libs.WS.HttpResponse;
-import play.libs.WS.WSRequest;
+
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.AsyncHttpClientConfig;
+import com.ning.http.client.AsyncHttpClientConfig.Builder;
+import com.ning.http.client.Response;
 
 @Entity
 public class HTTPProbe extends Model implements Probe {
@@ -55,16 +59,33 @@ public class HTTPProbe extends Model implements Probe {
   public ProbeResult check() {
     ProbeResult result;
 
-    WSRequest request = WS.url(serverURL);
-    HttpResponse response = request.get();
-    if (response.getStatus().equals(expectResponse)) {
-      result = new ProbeResult(true);
-    } else {
-      String message = String.format("Server response %d but expect %d",
-          response.getStatus(), expectResponse);
-      Logger.error(message);
+    Builder confBuilder = new AsyncHttpClientConfig.Builder();
+    confBuilder.setRequestTimeoutInMs(1000);
+    confBuilder.setConnectionTimeoutInMs(1000);
+    confBuilder.setIdleConnectionTimeoutInMs(1000);
+    confBuilder.setFollowRedirects(false);
+    confBuilder.setKeepAlive(false);
+
+    AsyncHttpClient client = new AsyncHttpClient(confBuilder.build());
+
+    try {
+      Future<Response> future = client.prepareGet(serverURL).execute();
+      Response response = future.get();
+      if (response.getStatusCode() == expectResponse) {
+        result = new ProbeResult(true);
+      } else {
+        String message = String.format("Server response %d but expect %d",
+            response.getStatusCode(), expectResponse);
+        Logger.error(message);
+        result = new ProbeResult(false, message);
+      }
+    } catch (Exception e) {
+      String message = String.format("Server can't connect to %s", serverURL);
+      Logger.error(e, message);
       result = new ProbeResult(false, message);
     }
+
+    client.close();
 
     return result;
   }
