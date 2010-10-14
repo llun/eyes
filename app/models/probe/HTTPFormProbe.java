@@ -71,7 +71,7 @@ public class HTTPFormProbe extends Model implements Probe {
     confBuilder.setRequestTimeoutInMs(1000);
     confBuilder.setConnectionTimeoutInMs(1000);
     confBuilder.setIdleConnectionTimeoutInMs(1000);
-    confBuilder.setFollowRedirects(true);
+    confBuilder.setFollowRedirects(false);
     confBuilder.setKeepAlive(false);
 
     AsyncHttpClient client = new AsyncHttpClient(confBuilder.build());
