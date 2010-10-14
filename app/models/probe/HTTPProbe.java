@@ -60,9 +60,9 @@ public class HTTPProbe extends Model implements Probe {
     ProbeResult result;
 
     Builder confBuilder = new AsyncHttpClientConfig.Builder();
-    confBuilder.setRequestTimeoutInMs(1000);
-    confBuilder.setConnectionTimeoutInMs(1000);
-    confBuilder.setIdleConnectionTimeoutInMs(1000);
+    confBuilder.setRequestTimeoutInMs(5000);
+    confBuilder.setConnectionTimeoutInMs(5000);
+    confBuilder.setIdleConnectionTimeoutInMs(5000);
     confBuilder.setFollowRedirects(true);
     confBuilder.setKeepAlive(false);
 
