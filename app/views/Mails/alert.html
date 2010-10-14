@@ -3,7 +3,20 @@
   <body>
     <ul>
     #{list items:server.probes(), as:'probe'}
-    <li>${probe.name()}: ${probe.status().message}</li>
+    <li>
+      ${probe.name()}: 
+      #{if probe.status().message.length() > 0}
+        ${probe.status().message}
+      #{/if}
+      #{else}
+        #{if probe.status().success}
+          OK
+        #{/if}
+        #{else}
+          Have a problem.
+        #{/else}
+      #{/else}
+    </li>
     #{/list}
     </ul>
   </body>

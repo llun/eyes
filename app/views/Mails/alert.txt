@@ -1,5 +1,16 @@
 #{verbatim}
 #{list items:server.probes(), as:'probe'}
-${probe.name()}: ${probe.status().message}
+${probe.name()}: 
+#{if probe.status().message.length() > 0}
+  ${probe.status().message}
+#{/if}
+#{else}
+  #{if probe.status().success}
+    OK
+  #{/if}
+  #{else}
+    Have a problem.
+  #{/else}
+#{/else}
 #{/list}  
 #{/verbatim}
