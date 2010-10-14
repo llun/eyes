@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,16 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import models.User.Role;
-
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
-
-import play.Logger;
-import play.Play;
+import notifiers.Mails;
 import play.db.jpa.Model;
-import play.i18n.Messages;
 import play.libs.Codec;
-import play.libs.Mail;
 import play.mvc.Router;
 
 @Entity
@@ -69,23 +61,7 @@ public class Invite extends Model {
         arguments.put("code", inviteCode);
         String inviteURL = Router.getFullUrl("Invites.invite", arguments);
 
-        ArrayList<String> to = new ArrayList<String>();
-        to.add(lcEmail);
-        String from = Play.configuration.getProperty("eyes.mail");
-        HtmlEmail htmlEmail = new HtmlEmail();
-        try {
-          htmlEmail.setFrom(from);
-          htmlEmail.setTo(to);
-          htmlEmail.setSubject(Messages.get("responder.invite.header",
-              server.owner.username, server.name));
-          htmlEmail
-              .setHtmlMsg(Messages.get("responder.invite.body", inviteURL));
-          Mail.send(htmlEmail);
-          result = true;
-        } catch (EmailException e) {
-          Logger.error(e, "Can't send email");
-        }
-
+        Mails.invite(server, lcEmail, inviteURL);
       }
 
     }

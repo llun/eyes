@@ -1,0 +1,5 @@
+#{verbatim}
+#{list items:server.probes(), as:'probe'}
+${probe.name()}: ${probe.status().message}
+#{/list}  
+#{/verbatim}

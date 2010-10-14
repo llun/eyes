@@ -18,7 +18,6 @@ register = Register
 profile = Profile
 
 mail.verify.head = Please verify account
-mail.verify.body = Verify link: %s
 
 user.login.error=Oops, unknown username or password.
 user.logout=You have been logged out.

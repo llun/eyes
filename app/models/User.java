@@ -8,6 +8,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import notifiers.Mails;
+
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
 
@@ -149,22 +151,7 @@ public class User extends Model {
       arguments.put("user", user.id);
       arguments.put("code", user.verifyCode);
       String verifyURL = Router.getFullUrl("Application.verify", arguments);
-
-      ArrayList<String> to = new ArrayList<String>();
-      to.add(lcEmail);
-      String from = Play.configuration.getProperty("eyes.mail");
-      HtmlEmail htmlEmail = new HtmlEmail();
-      try {
-        htmlEmail.setFrom(from);
-        htmlEmail.setTo(to);
-        htmlEmail.setSubject(Messages.get("mail.verify.head"));
-        htmlEmail.setHtmlMsg(Messages.get("mail.verify.body", verifyURL));
-        Mail.send(htmlEmail);
-
-        result = true;
-      } catch (EmailException e) {
-        Logger.error(e, "Can't send mail");
-      }
+      Mails.verify(lcUsername, lcEmail, verifyURL);
     }
     return result;
   }

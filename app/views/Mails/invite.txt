@@ -1,0 +1,5 @@
+#{verbatim}
+Someone invite you to monitor ${server.name}. Click the link below to accept invitation.
+<a href="${inviteURL}">Click to accept invitation!</a>
+Or copy and paste the following URL in your browser: ${inviteURL}
+#{/verbatim}

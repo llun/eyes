@@ -11,6 +11,7 @@ import models.ServerEventLog;
 import models.User;
 import models.probe.Probe;
 import models.probe.ProbeResult;
+import notifiers.Mails;
 
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
@@ -46,16 +47,12 @@ public class Monitor extends Job {
     List<Server> servers = Server.all().fetch();
     for (Server server : servers) {
       server.status = Status.UP;
-      StringBuffer buffer = new StringBuffer();
       Probe serverProbes[] = server.probes();
       for (Probe probe : serverProbes) {
         ProbeResult status = probe.status();
         if (!status.success && server.status == Status.UP) {
           server.status = Status.DOWN;
         }
-
-        buffer.append(String.format("%s: %s\n<br />\n", probe.name(),
-            status.success ? "OK" : status.message));
 
         ProbeEventLog.submit(probe.getId(), probe.type(), status.success,
             status.message);
@@ -69,27 +66,8 @@ public class Monitor extends Job {
       server.save();
       ServerEventLog.submit(server, server.status, server.message);
 
-      if (server.status == Status.DOWN && server.probes().length > 0
-          && server.responders.size() > 0) {
-        ArrayList<String> recipients = new ArrayList<String>();
-        Set<User> responders = server.responders;
-        for (User responder : responders) {
-          recipients.add(responder.email);
-        }
-
-        String from = Play.configuration.getProperty("eyes.mail");
-        HtmlEmail htmlEmail = new HtmlEmail();
-        try {
-          htmlEmail.setFrom(from);
-          htmlEmail.setTo(recipients);
-          htmlEmail.setSubject(String.format("%s have some problems",
-              server.name));
-          htmlEmail.setHtmlMsg(buffer.toString());
-          Mail.send(htmlEmail);
-        } catch (EmailException e) {
-          Logger.error(e, "Can't send mail");
-        }
-
+      if (server.status == Status.DOWN) {
+        Mails.alert(server);
       }
 
     }

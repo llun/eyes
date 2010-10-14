@@ -1,0 +1,13 @@
+#{verbatim}
+Dear ${username}
+
+To complete the registration, please click the link below to verify:
+
+${verifyURL}
+
+Or copy and paste the following URL in your browser: ${verifyURL}
+Got questions or need help? Email us at eyes@nytes.net, or visit our forum http://eyes.nytes.net.
+
+Thanks,
+Nytes
+#{/verbatim}

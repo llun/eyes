@@ -1,0 +1,11 @@
+#{verbatim}
+<html>
+  <body>
+    <ul>
+    #{list items:server.probes(), as:'probe'}
+    <li>${probe.name()}: ${probe.status().message}</li>
+    #{/list}
+    </ul>
+  </body>
+</html>  
+#{/verbatim}
