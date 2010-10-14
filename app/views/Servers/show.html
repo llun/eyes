@@ -306,8 +306,13 @@
   <ul>
   #{list items:probes, as:'probe'}
     <li>
-      #{if probe.status().success}
-      <img class="status" src="/public/images/Done Square.png" />
+      #{if probe.status() && probe.status().success}
+        #{if probe.status().success}
+        <img class="status" src="/public/images/Done Square.png" />
+        #{/if}
+        #{else}
+        <img class="status" src="/public/images/Caution.png" />
+        #{/else}
       #{/if}
       #{else}
       <img class="status" src="/public/images/Caution.png" />
