@@ -21,7 +21,7 @@ public class Monitor extends Job {
   public void doJob() {
 
     Logger.info("Checking probes");
-    Collection<Probe> probes = Server.allProbes();
+    Collection<Probe> probes = Server.activeProbes();
     for (Probe probe : probes) {
       try {
         Class probeClass = probe.getClass();
