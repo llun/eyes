@@ -120,8 +120,6 @@ public class Server extends Model implements Comparable<Server> {
     
     // Destroy all event logs.
     ServerEventLog.delete("server = ?", this);
-    long count = ServerEventLog.count("byServer", this);
-    System.out.println(count);
 
     // destroy itself
     delete();
