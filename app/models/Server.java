@@ -116,10 +116,12 @@ public class Server extends Model implements Comparable<Server> {
     }
 
     // Destroy all invites.
-    List<Invite> invites = Invite.find("byServer", this).fetch();
-    for (Invite invite : invites) {
-      invite.delete();
-    }
+    Invite.delete("server = ?", this);
+    
+    // Destroy all event logs.
+    ServerEventLog.delete("server = ?", this);
+    long count = ServerEventLog.count("byServer", this);
+    System.out.println(count);
 
     // destroy itself
     delete();
@@ -140,6 +142,10 @@ public class Server extends Model implements Comparable<Server> {
     }
 
     return probes.toArray(new Probe[probes.size()]);
+  }
+
+  public static Probe[] activeProbes() {
+    return new Probe[0];
   }
 
   public static String[] probeTypes() {

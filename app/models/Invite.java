@@ -62,6 +62,7 @@ public class Invite extends Model {
         String inviteURL = Router.getFullUrl("Invites.invite", arguments);
 
         Mails.invite(server, lcEmail, inviteURL);
+        result = true;
       }
 
     }

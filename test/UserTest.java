@@ -52,11 +52,11 @@ public class UserTest extends UnitTest {
 
   @Test
   public void testReject() {
-    assertEquals(4, User.count());
+    assertEquals(5, User.count());
     
     User user = User.find("byUsername", "inactive").first();
     user.reject("code");
-    assertEquals(3, User.count());
+    assertEquals(4, User.count());
   }
 
 }

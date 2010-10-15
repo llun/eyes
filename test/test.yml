@@ -83,6 +83,13 @@ probe.HTTPProbe(probe):
   serverURL: http://llun.in.th
   expectResponse: 200
   
+probe.HTTPProbe(probe2):
+  server: sample
+  name: Sample2
+  serverURL: http://llun.in.th
+  expectResponse: 200
+  disable: true
+  
 Invite(userinvite):
   server: sample
   email: noserver@eyes.labs

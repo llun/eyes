@@ -152,6 +152,7 @@ public class User extends Model {
       arguments.put("code", user.verifyCode);
       String verifyURL = Router.getFullUrl("Application.verify", arguments);
       Mails.verify(lcUsername, lcEmail, verifyURL);
+      result = true;
     }
     return result;
   }

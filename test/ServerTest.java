@@ -23,7 +23,7 @@ public class ServerTest extends UnitTest {
   public void testProbe() {
     Server server = Server.find("byName", "sample").first();
     Probe[] probes = server.probes();
-    assertEquals(1, probes.length);
+    assertEquals(2, probes.length);
   }
 
   @Test
@@ -35,13 +35,19 @@ public class ServerTest extends UnitTest {
   @Test
   public void testAllProbes() {
     Probe[] probes = Server.allProbes();
+    assertEquals(2, probes.length);
+  }
+  
+  @Test
+  public void testActibeProbes() {
+    Probe[] probes = Server.activeProbes();
     assertEquals(1, probes.length);
   }
 
   @Test
   public void testDestroy() {
     long totalProbe = HTTPProbe.count();
-    assertEquals(1, totalProbe);
+    assertEquals(2, totalProbe);
 
     Server server = Server.find("byName", "sample").first();
     server.destroy();
