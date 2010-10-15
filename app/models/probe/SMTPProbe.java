@@ -34,6 +34,8 @@ public class SMTPProbe extends Model implements Probe {
   public String username;
   public String password;
   public String address;
+  
+  public Boolean disable;
 
   @Lob
   public ProbeResult status;
@@ -61,6 +63,10 @@ public class SMTPProbe extends Model implements Probe {
     return server;
   }
 
+  public Boolean disable() {
+    return disable;
+  }
+  
   public ProbeResult status() {
     return status;
   }

@@ -27,6 +27,8 @@ public class IMAPProbe extends Model implements Probe {
   public String username;
   public String password;
   public String address;
+  
+  public Boolean disable;
 
   @Lob
   public ProbeResult status;
@@ -50,6 +52,10 @@ public class IMAPProbe extends Model implements Probe {
 
   public Server server() {
     return server;
+  }
+  
+  public Boolean disable() {
+    return disable;
   }
 
   public ProbeResult status() {

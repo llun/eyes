@@ -30,6 +30,8 @@ public class HTTPProbe extends Model implements Probe {
   public String serverURL;
   public Integer expectResponse;
 
+  public Boolean disable;
+  
   @Lob
   public ProbeResult status;
 
@@ -50,6 +52,10 @@ public class HTTPProbe extends Model implements Probe {
 
   public Server server() {
     return server;
+  }
+  
+  public Boolean disable() {
+    return disable;
   }
 
   public ProbeResult status() {

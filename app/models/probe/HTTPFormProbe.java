@@ -39,6 +39,8 @@ public class HTTPFormProbe extends Model implements Probe {
   @Lob
   public HashMap<String, String> properties;
 
+  public Boolean disable;
+  
   public HTTPFormProbe(Server server, String name, String URL,
       int expectResponse, HashMap<String, String> properties) {
     this.server = server;
@@ -58,6 +60,10 @@ public class HTTPFormProbe extends Model implements Probe {
 
   public Server server() {
     return server;
+  }
+  
+  public Boolean disable() {
+    return disable;
   }
 
   public ProbeResult status() {
