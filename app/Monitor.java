@@ -1,27 +1,19 @@
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import models.ProbeEventLog;
 import models.Server;
 import models.Server.Status;
 import models.ServerEventLog;
-import models.User;
 import models.probe.Probe;
 import models.probe.ProbeResult;
 import notifiers.Mails;
-
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.HtmlEmail;
-
 import play.Logger;
-import play.Play;
 import play.i18n.Messages;
 import play.jobs.Every;
 import play.jobs.Job;
-import play.libs.Mail;
 
 @Every("5mn")
 public class Monitor extends Job {
@@ -29,7 +21,7 @@ public class Monitor extends Job {
   public void doJob() {
 
     Logger.info("Checking probes");
-    Probe[] probes = Server.allProbes();
+    Collection<Probe> probes = Server.allProbes();
     for (Probe probe : probes) {
       try {
         Class probeClass = probe.getClass();

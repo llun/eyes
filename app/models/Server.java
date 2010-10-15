@@ -117,7 +117,7 @@ public class Server extends Model implements Comparable<Server> {
 
     // Destroy all invites.
     Invite.delete("server = ?", this);
-    
+
     // Destroy all event logs.
     ServerEventLog.delete("server = ?", this);
 
@@ -125,7 +125,7 @@ public class Server extends Model implements Comparable<Server> {
     delete();
   }
 
-  public static Probe[] allProbes() {
+  public static Collection<Probe> allProbes() {
     HashSet<Probe> probes = new HashSet<Probe>();
     List<Class> founds = Play.classloader.getAssignableClasses(Probe.class);
     for (Class clazz : founds) {
@@ -139,11 +139,24 @@ public class Server extends Model implements Comparable<Server> {
       }
     }
 
-    return probes.toArray(new Probe[probes.size()]);
+    return probes;
   }
 
-  public static Probe[] activeProbes() {
-    return new Probe[0];
+  public static Collection<Probe> activeProbes() {
+    Predicate predicate = new Predicate() {
+
+      public boolean evaluate(Object object) {
+        boolean active = false;
+        if (object instanceof Probe) {
+          Probe probe = (Probe) object;
+          active = !(probe.disable() == null ? false : probe.disable());
+        }
+        return active;
+      }
+    };
+
+    Collection<Probe> probes = CollectionUtils.select(allProbes(), predicate);
+    return probes;
   }
 
   public static String[] probeTypes() {

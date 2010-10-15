@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -34,14 +35,14 @@ public class ServerTest extends UnitTest {
 
   @Test
   public void testAllProbes() {
-    Probe[] probes = Server.allProbes();
-    assertEquals(2, probes.length);
+    Collection<Probe> probes = Server.allProbes();
+    assertEquals(2, probes.size());
   }
   
   @Test
   public void testActibeProbes() {
-    Probe[] probes = Server.activeProbes();
-    assertEquals(1, probes.length);
+    Collection<Probe> probes  = Server.activeProbes();
+    assertEquals(1, probes.size());
   }
 
   @Test
