@@ -30,7 +30,7 @@ import play.utils.Java;
 public class Server extends Model implements Comparable<Server> {
 
   public static enum Status {
-    UP, DOWN;
+    UP, DOWN, SOME_DOWN;
   }
 
   @OneToOne
@@ -45,12 +45,15 @@ public class Server extends Model implements Comparable<Server> {
   @JoinTable(name = "SERVER_USER", joinColumns = @JoinColumn(name = "SERVER_ID"), inverseJoinColumns = @JoinColumn(name = "USER_ID"))
   public Set<User> responders;
 
+  public Boolean alertWhenAllFail;
+
   public Server(User owner, String name) {
     this.owner = owner;
     this.name = name;
     this.status = Status.DOWN;
     this.message = "";
     this.responders = new HashSet<User>();
+    this.alertWhenAllFail = false;
   }
 
   public void addResponder(User user) {

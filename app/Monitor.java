@@ -40,17 +40,26 @@ public class Monitor extends Job {
     for (Server server : servers) {
       server.status = Status.UP;
       Probe serverProbes[] = server.probes();
+      Integer totalDown = 0;
       for (Probe probe : serverProbes) {
         ProbeResult status = probe.status();
-        if (!status.success && server.status == Status.UP) {
-          server.status = Status.DOWN;
+        if (!status.success) {
+          totalDown++;
+
+          if (server.status == Status.UP) {
+            server.status = Status.SOME_DOWN;
+          }
         }
 
         ProbeEventLog.submit(probe.getId(), probe.type(), status.success,
             status.message);
       }
 
-      if (server.status == Status.DOWN) {
+      if (totalDown == serverProbes.length) {
+        server.status = Status.DOWN;
+      }
+
+      if (server.status == Status.DOWN || server.status == Status.SOME_DOWN) {
         server.message = Messages.get("server.probe.down");
       } else {
         server.message = "";
@@ -58,8 +67,16 @@ public class Monitor extends Job {
       server.save();
       ServerEventLog.submit(server, server.status, server.message);
 
-      if (server.status == Status.DOWN) {
-        Mails.alert(server);
+      boolean allFail = server.alertWhenAllFail == null ? false
+          : server.alertWhenAllFail;
+      if (allFail) {
+        if (server.status == Status.DOWN) {
+          Mails.alert(server);
+        }
+      } else {
+        if (server.status == Status.DOWN || server.status == Status.SOME_DOWN) {
+          Mails.alert(server);
+        }
       }
 
     }

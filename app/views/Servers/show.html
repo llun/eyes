@@ -224,12 +224,21 @@
     this.show_responder = function show_responder() {
       $('.responder-form').show()
       $('.probe-form').hide()
+      $('.settings-form').hide()
       $('.error').hide()
     }
     
     this.show_probe = function show_probe() {
       $('.probe-form').show()
       $('.responder-form').hide()
+      $('.settings-form').hide()
+      $('.error').hide()
+    }
+    
+    this.show_settings = function show_settings() {
+      $('.probe-form').hide()
+      $('.responder-form').hide()
+      $('.settings-form').show()
       $('.error').hide()
     }
     
@@ -257,11 +266,14 @@
     })
     
     $('#probe-form-menu').click(this.show_probe)
-    
     $('#responder-form-menu').click(this.show_responder)
+    $('#settings-form-menu').click(this.show_settings)
     
     if (document.location.hash == '#responder') {
       this.show_responder()
+      $('.error').show()
+    } else if (document.location.hash == '#settings') {
+      this.show_settings()
       $('.error').show()
     } else {
       this.show_probe()
@@ -274,7 +286,9 @@
 #{/set}
 
 <div class="post entry">
-  <a id="probe-form-menu" href="#probe">Probe</a> | <a id="responder-form-menu" href="#responder">Responder</a>
+  <a id="probe-form-menu" href="#probe">Probe</a> | 
+  <a id="responder-form-menu" href="#responder">Responder</a> |
+  <a id="settings-form-menu" href="#settings">Settings</a>
 </div>
 
 #{secure.check 'user'}
@@ -395,3 +409,29 @@
   #{/list}
   </ul>
 </div>
+
+#{secure.check 'user'}
+<div id="genericform" class="settings-form">
+
+  <h3>&{'server.settings'}</h3>
+
+  #{validation /}
+
+  <form name="settings-form" action="@{Responders.create}" method="post" accept-charset="utf-8">
+
+    #{field 'server'}
+    <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
+    #{/field}
+
+    <p>
+      #{field 'email'}
+      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
+      <label for="${field.name}">&{'email'}</label>
+      #{/field}
+    </p>
+
+    <p class="input-submit"><input type="submit" value="&{'responder.add'}"></p>
+  </form>
+
+</div>
+#{/secure.check}
