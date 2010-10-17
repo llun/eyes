@@ -41,7 +41,7 @@ public class Servers extends Controller {
     }
     index();
   }
-
+  
   public static void create(@Required String name) {
     if (Validation.hasErrors()) {
       Validation.keep();

@@ -319,7 +319,13 @@
       #{/else}
       ${probe.name()} (${probe.type()}) - 
       <a href="/${probe.type()}Probes/delete?server=${instance.id}&probe=${probe.id}">&{'probe.delete'}</a> | 
-      <a href="/${probe.type()}Probes/check?server=${instance.id}&probe=${probe.id}">&{'probe.check'}</a>
+      <a href="/${probe.type()}Probes/check?server=${instance.id}&probe=${probe.id}">&{'probe.check'}</a> | 
+      #{if probe.disable()}
+        <a href="@{Probes.disable(instance.id, probe.type(), probe.getId(), false)}">enable</a>
+      #{/if}
+      #{else}
+        <a href="@{Probes.disable(instance.id, probe.type(), probe.getId(), true)}">disable</a>
+      #{/else}
     </li>
   #{/list}
   </ul>
