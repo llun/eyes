@@ -221,25 +221,14 @@
   $(function() {
     var totalParam = 0
     
-    this.show_responder = function show_responder() {
-      $('.responder-form').show()
-      $('.probe-form').hide()
-      $('.settings-form').hide()
-      $('.error').hide()
-    }
-    
-    this.show_probe = function show_probe() {
-      $('.probe-form').show()
-      $('.responder-form').hide()
-      $('.settings-form').hide()
-      $('.error').hide()
-    }
-    
-    this.show_settings = function show_settings() {
+    this.show_form = function show_form(name) {
       $('.probe-form').hide()
       $('.responder-form').hide()
-      $('.settings-form').show()
+      $('.settings-form').hide()
+      $('.graph-form').hide()
       $('.error').hide()
+      
+      $('.' + name + '-form').show()
     }
     
     $('#probe-type').change(function(event) {
@@ -265,20 +254,13 @@
       }
     })
     
-    $('#probe-form-menu').click(this.show_probe)
-    $('#responder-form-menu').click(this.show_responder)
-    $('#settings-form-menu').click(this.show_settings)
+    $('#probe-form-menu').click(function() { document.show_form('probe') })
+    $('#responder-form-menu').click(function() { document.show_form('responder') })
+    $('#settings-form-menu').click(function() { document.show_form('settings') })
     
-    if (document.location.hash == '#responder') {
-      this.show_responder()
-      $('.error').show()
-    } else if (document.location.hash == '#settings') {
-      this.show_settings()
-      $('.error').show()
-    } else {
-      this.show_probe()
-      $('.error').show()      
-    }
+    var hash = document.location.hash.substring(1)
+    this.show_form(hash)
+    $('.error').show()
   })
 </script>
 
@@ -288,6 +270,7 @@
 <div class="post entry">
   <a id="probe-form-menu" href="#probe">Probe</a> | 
   <a id="responder-form-menu" href="#responder">Responder</a> |
+  <a id="graph-form-menu" href="#graph">Graph</a> |
   <a id="settings-form-menu" href="#settings">Settings</a>
 </div>
 
