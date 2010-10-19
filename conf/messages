@@ -39,6 +39,9 @@ server.probe.down = Some probes have problem.
 server.responders = Responders
 server.responders.waiting = Waiting response
 server.duplicated = duplicated
+server.settings = Settings
+server.settings.alertWhenAllFail = Alert when all probe fail
+server.settings.save = Save
 
 probe.create = Create probe
 probe.delete = delete

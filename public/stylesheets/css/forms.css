@@ -33,6 +33,10 @@ p.input-submit {
   width: 120px !important;
 }
 
+#genericform .normal {
+  width: auto !important;
+}
+
 #commentform textarea {
 	font-size: 1em;
 	font-family: Helvetica, Arial, sans-serif;

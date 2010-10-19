@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Set;
 
 import models.Invite;
@@ -14,6 +15,7 @@ import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.i18n.Messages;
 import play.mvc.Controller;
+import play.mvc.Router;
 import play.mvc.With;
 
 @With(Secure.class)
@@ -41,7 +43,7 @@ public class Servers extends Controller {
     }
     index();
   }
-  
+
   public static void create(@Required String name) {
     if (Validation.hasErrors()) {
       Validation.keep();
@@ -73,5 +75,21 @@ public class Servers extends Controller {
     if (instance != null) {
       renderText(ServerEventLog.eventCount(instance, status, begin, end));
     }
+  }
+
+  public static void saveSettings(@Required Long server,
+      boolean alertWhenAllFail) {
+
+    Server instance = Server.findById(server);
+    if (instance != null) {
+      instance.alertWhenAllFail = alertWhenAllFail;
+      instance.save();
+    }
+    
+    HashMap<String, Object> arguments = new HashMap<String, Object>(1);
+    arguments.put("server", server);
+    String URL = Router.getFullUrl("Servers.show", arguments);
+    redirect(URL.concat("#settings"));
+
   }
 }

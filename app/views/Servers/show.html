@@ -417,20 +417,20 @@
 
   #{validation /}
 
-  <form name="settings-form" action="@{Responders.create}" method="post" accept-charset="utf-8">
+  <form name="settings-form" action="@{Servers.saveSettings}" method="post" accept-charset="utf-8">
 
     #{field 'server'}
     <input type="hidden" name="${field.name}" value="${instance.id}" id="${field.name}">
     #{/field}
 
     <p>
-      #{field 'email'}
-      <input type="text" name="${field.name}" id="${field.id}" class="input-text" size="22">
-      <label for="${field.name}">&{'email'}</label>
+      #{field 'alertWhenAllFail'}
+      <input type="checkbox" name="${field.name}" value="true" #{if instance.alertWhenAllFail}checked#{/if} class="normal" />
+      <label for="${field.name}">&{'server.settings.alertWhenAllFail'}</label>
       #{/field}
     </p>
 
-    <p class="input-submit"><input type="submit" value="&{'responder.add'}"></p>
+    <p class="input-submit"><input type="submit" value="&{'server.settings.save'}"></p>
   </form>
 
 </div>
