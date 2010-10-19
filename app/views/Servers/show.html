@@ -2,7 +2,7 @@
 #{set title:'Information' /}
 
 #{set 'moreScripts'}
-
+  
 <script type="text/html" charset="utf-8" id="probe_HTTP">
   <hr />
   
@@ -217,6 +217,10 @@
   </p>
 </script>
 
+<script type="text/html" charset="utf-8" id="status_pie_message">
+  Normally: <%=normally%> Problem: <%=problem%>
+</script>
+
 <script type="text/javascript" charset="utf-8">
   $(function() {
     var totalParam = 0
@@ -229,6 +233,23 @@
       $('.error').hide()
       
       $('.' + name + '-form').show()
+    }
+    
+    this.show_chart = function show_chart() {
+      var down = 0
+      var up = 1
+      
+      var eventCountAction = #{jsAction @Servers.eventCount(instance.id, ':status') /}
+      $.get(eventCountAction({status: 'DOWN'}), function(data) {
+        down = data
+        $.get(eventCountAction({status: 'UP'}), function (data) {
+          up = data
+          
+          var status = [up, down]
+          $('.status-pie').sparkline(status, {type: 'pie', sliceColors: ['#008000', '#D50000'], height: '150px'})
+          $('.status-message').html(tmpl('status_pie_message', {normally: up, problem: down}))
+        })
+      })      
     }
     
     $('#probe-type').change(function(event) {
@@ -278,6 +299,7 @@
       }
     })
     
+    
     var hash = "probe"
     if (document.location.hash.length > 0) {
       var hash = document.location.hash.substring(1)
@@ -285,9 +307,10 @@
 
     this.show_form(hash)
     $('.error').show()
+    
+    this.show_chart()
   })
 </script>
-
 
 #{/set}
 
@@ -415,6 +438,11 @@
   </li>
   #{/list}
   </ul>
+</div>
+
+<div id="genericform" class="graph-form">
+  <span class="status-pie"></span>
+  <span class="status-message"></span>
 </div>
 
 <div id="genericform" class="graph-form">
