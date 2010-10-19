@@ -257,8 +257,32 @@
     $('#probe-form-menu').click(function() { document.show_form('probe') })
     $('#responder-form-menu').click(function() { document.show_form('responder') })
     $('#settings-form-menu').click(function() { document.show_form('settings') })
+    $('#graph-form-menu').click(function() { document.show_form('graph') })
     
-    var hash = document.location.hash.substring(1)
+    $('#logs').dataTable({
+      "bProcessing": true,
+      "bPaginate": true,
+      "bFilter": false,
+      "bSort": false,
+      "bServerSide": true,
+      "sPaginationType": "full_numbers",
+      "bAutoWidth": false,
+      "sAjaxSource": "@{Servers.events(instance.id)}",
+      "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+        if (aData[1] == "OK") {
+          $(nRow).addClass("green")
+        } else {
+          $(nRow).addClass("red")
+        }
+        return nRow
+      }
+    })
+    
+    var hash = "probe"
+    if (document.location.hash.length > 0) {
+      var hash = document.location.hash.substring(1)
+    }
+
     this.show_form(hash)
     $('.error').show()
   })
@@ -391,6 +415,23 @@
   </li>
   #{/list}
   </ul>
+</div>
+
+<div id="genericform" class="graph-form">
+  <table border="0" cellspacing="5" cellpadding="5" id="logs">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3">Loading data from server</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 #{secure.check 'user'}

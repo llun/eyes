@@ -1,7 +1,10 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import models.Invite;
@@ -17,6 +20,10 @@ import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Router;
 import play.mvc.With;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 @With(Secure.class)
 public class Servers extends Controller {
@@ -69,6 +76,49 @@ public class Servers extends Controller {
     index();
   }
 
+  public static void events(Long server, Integer sEcho, Integer iDisplayStart,
+      Integer iDisplayLength) {
+    Server instance = Server.findById(server);
+
+    long totalRecord = 0;
+    long totalDisplayRecord = 0;
+
+    JsonArray result = new JsonArray();
+
+    if (instance != null) {
+      
+      int begin = iDisplayStart / iDisplayLength + 1;
+      int length = iDisplayLength;
+      
+      List<ServerEventLog> logs = ServerEventLog.find("server = ? order by id desc", instance)
+          .fetch(begin, length);
+      totalRecord = ServerEventLog.count("byServer", instance);
+      totalDisplayRecord = totalRecord;
+
+      SimpleDateFormat formatter = new SimpleDateFormat("H:mm dd/MM/yyyy");
+      for (ServerEventLog log : logs) {
+
+        JsonArray record = new JsonArray();
+
+        String date = formatter.format(log.created);
+        String status = log.status == Status.UP ? "OK" : "Down";
+
+        record.add(new JsonPrimitive(date));
+        record.add(new JsonPrimitive(status));
+        record.add(new JsonPrimitive(log.message));
+
+        result.add(record);
+      }
+    }
+
+    JsonObject object = new JsonObject();
+    object.add("sEcho", new JsonPrimitive(sEcho));
+    object.add("iTotalRecords", new JsonPrimitive(totalRecord));
+    object.add("iTotalDisplayRecords", new JsonPrimitive(totalDisplayRecord));
+    object.add("aaData", result);
+    renderJSON(object.toString());
+  }
+
   public static void eventCount(@Required Long server, Status status,
       Date begin, Date end) {
     Server instance = Server.findById(server);
@@ -85,7 +135,7 @@ public class Servers extends Controller {
       instance.alertWhenAllFail = alertWhenAllFail;
       instance.save();
     }
-    
+
     HashMap<String, Object> arguments = new HashMap<String, Object>(1);
     arguments.put("server", server);
     String URL = Router.getFullUrl("Servers.show", arguments);
