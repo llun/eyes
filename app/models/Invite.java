@@ -103,6 +103,9 @@ public class Invite extends Model {
           user.verifyCode = "";
           user.role = Role.RESPONDER;
           user.save();
+          
+          Quota quota = Quota.createDefaultQuota(user);
+          quota.save();
 
           instance.addResponder(user);
           instance.save();

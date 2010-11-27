@@ -110,5 +110,15 @@ public class Quota extends Model {
     Quota quota = Quota.find("byUser", user).first();
     return quota.canInviteResponder(server);
   }
+  
+  public static Quota createDefaultQuota(User user) {
+    Quota quota = new Quota(user);
+    quota.serverLimit = 1;
+    quota.probeLimit = 3;
+    quota.responderLimit = 3;
+    quota.allowMSN = false;
+    quota.allowProbes = "HTTP,HTTPForm,IMAP";
+    return quota;
+  }
 
 }

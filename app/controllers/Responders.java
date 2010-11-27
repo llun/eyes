@@ -18,17 +18,6 @@ import play.mvc.With;
 @With(Secure.class)
 public class Responders extends Controller {
 
-  public static void invite(@Required @Email String email) {
-    if (!Validation.hasErrors()) {
-      User user = User.fromEmail(email);
-      if (user != null) {
-
-      }
-    } else {
-      notFound();
-    }
-  }
-
   public static void create(@Required Long server, @Email String email) {
     if (Validation.hasErrors()) {
       params.flash();

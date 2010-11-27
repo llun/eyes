@@ -139,12 +139,7 @@ public class User extends Model {
       user = new User(lcUsername, password, lcEmail);
       user.save();
 
-      Quota quota = new Quota(user);
-      quota.serverLimit = 1;
-      quota.probeLimit = 3;
-      quota.responderLimit = 3;
-      quota.allowMSN = false;
-      quota.allowProbes = "HTTP,HTTPForm,IMAP";
+      Quota quota = Quota.createDefaultQuota(user);
       quota.save();
 
       HashMap<String, Object> arguments = new HashMap<String, Object>();
