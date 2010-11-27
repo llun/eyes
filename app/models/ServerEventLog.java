@@ -72,21 +72,26 @@ public class ServerEventLog extends Model {
     return isFail;
   }
 
-  public static boolean isLastEventSuccessDifferFromMinutes(Server server, int minutes) {
+  public static boolean isLastEventSuccessDifferFromMinutes(Server server,
+      int minutes) {
     boolean equalsOrGreaterThanMinutes = false;
-    
-    ServerEventLog log = ServerEventLog.find("server = ? and status = ? order by id desc",
-        server, Status.UP).first();
-    
+
+    ServerEventLog log = ServerEventLog.find(
+        "server = ? and status = ? order by id desc", server, Status.UP)
+        .first();
+
     Date now = new Date();
     long currentTimeStamp = now.getTime();
-    long eventTimeStamp = log.created.getTime();
-    
+    long eventTimeStamp = now.getTime();
+    if (log != null) {
+      eventTimeStamp = log.created.getTime();
+    }
+
     long diff = currentTimeStamp - eventTimeStamp;
     if ((diff / 60000) >= minutes) {
       equalsOrGreaterThanMinutes = true;
     }
-    
+
     return equalsOrGreaterThanMinutes;
   }
 
