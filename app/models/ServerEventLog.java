@@ -61,4 +61,33 @@ public class ServerEventLog extends Model {
     return count;
   }
 
+  public static boolean isLastThreeEventFail(Server server) {
+    List<ServerEventLog> logs = ServerEventLog.find(
+        "server = ? order by id desc", server).fetch(3);
+    boolean isFail = true;
+    for (ServerEventLog log : logs) {
+      isFail = (log.status == Status.SOME_DOWN || log.status == Status.DOWN)
+          && isFail;
+    }
+    return isFail;
+  }
+
+  public static boolean isLastEventSuccessDifferFromMinutes(Server server, int minutes) {
+    boolean equalsOrGreaterThanMinutes = false;
+    
+    ServerEventLog log = ServerEventLog.find("server = ? and status = ? order by id desc",
+        server, Status.UP).first();
+    
+    Date now = new Date();
+    long currentTimeStamp = now.getTime();
+    long eventTimeStamp = log.created.getTime();
+    
+    long diff = currentTimeStamp - eventTimeStamp;
+    if ((diff / 60000) >= minutes) {
+      equalsOrGreaterThanMinutes = true;
+    }
+    
+    return equalsOrGreaterThanMinutes;
+  }
+
 }

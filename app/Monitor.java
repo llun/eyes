@@ -65,19 +65,31 @@ public class Monitor extends Job {
         server.message = "";
       }
       server.save();
-      ServerEventLog.submit(server, server.status, server.message);
-
-      boolean allFail = server.alertWhenAllFail == null ? false
-          : server.alertWhenAllFail;
-      if (allFail) {
-        if (server.status == Status.DOWN) {
-          Mails.alert(server);
-        }
-      } else {
-        if (server.status == Status.DOWN || server.status == Status.SOME_DOWN) {
-          Mails.alert(server);
+      
+      // If last 3 status fail and current fail time differ from last success less than 1 hour.
+      boolean shouldAlert = true;
+      if (ServerEventLog.isLastThreeEventFail(server) && !ServerEventLog.isLastEventSuccessDifferFromMinutes(server, 60)) {
+        shouldAlert = false;
+      }
+      
+      if (shouldAlert) {
+        boolean allFail = server.alertWhenAllFail == null ? false
+            : server.alertWhenAllFail;
+        if (allFail) {
+          if (server.status == Status.DOWN) {
+            Mails.alert(server);
+          }
+        } else {
+          if (server.status == Status.DOWN || server.status == Status.SOME_DOWN) {
+            Mails.alert(server);
+          }
         }
       }
+      
+      ServerEventLog.submit(server, server.status, server.message);
+ 
+      
+      
 
     }
 
