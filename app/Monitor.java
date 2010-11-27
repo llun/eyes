@@ -67,10 +67,10 @@ public class Monitor extends Job {
       server.save();
       
       // If last 3 status fail and current fail time differ from last success less than 1 hour.
-      boolean shouldAlert = true;
+      boolean shouldAlert = server.enable;
       if (ServerEventLog.isLastThreeEventFail(server) && !ServerEventLog.isLastEventSuccessDifferFromMinutes(server, 60)) {
         shouldAlert = false;
-      }
+      } 
       
       if (shouldAlert) {
         boolean allFail = server.alertWhenAllFail == null ? false

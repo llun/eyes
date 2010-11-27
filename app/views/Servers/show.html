@@ -482,6 +482,13 @@
       #{/field}
     </p>
 
+    <p>
+	    #{field 'enable'}
+	    <input type="checkbox" name="${field.name}" value="true" #{if instance.enable}checked#{/if} class="normal" />
+	    <label for="${field.name}">&{'server.settings.enable'}</label>
+	    #{/field}
+    </p>
+
     <p class="input-submit"><input type="submit" value="&{'server.settings.save'}"></p>
   </form>
 

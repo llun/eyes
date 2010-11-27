@@ -42,6 +42,7 @@ server.duplicated = duplicated
 server.settings = Settings
 server.settings.alertWhenAllFail = Alert when all probe fail
 server.settings.save = Save
+server.settings.enable = Enable
 
 probe.create = Create probe
 probe.delete = delete

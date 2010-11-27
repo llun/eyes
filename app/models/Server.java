@@ -46,6 +46,7 @@ public class Server extends Model implements Comparable<Server> {
   public Set<User> responders;
 
   public Boolean alertWhenAllFail;
+  public Boolean enable;
 
   public Server(User owner, String name) {
     this.owner = owner;
@@ -54,6 +55,7 @@ public class Server extends Model implements Comparable<Server> {
     this.message = "";
     this.responders = new HashSet<User>();
     this.alertWhenAllFail = false;
+    this.enable = true;
   }
 
   public void addResponder(User user) {
